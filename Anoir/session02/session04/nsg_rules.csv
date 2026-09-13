@@ -1,0 +1,4 @@
+sg_name,rule_name,rule_type,protocol,priority,access,source_port_range,destination_port_range,source_address_prefix_cidr,destination_address_prefix
+aks-nsg,AllowHTTP,Inbound,Tcp,100,Allow,*,80,*,*
+aks-nsg,AllowHTTPS,Inbound,Tcp,110,Allow,*,443,*,*
+aks-nsg,AllowInternetOutbound,Outbound,*,100,Allow,*,*,*,Internet
