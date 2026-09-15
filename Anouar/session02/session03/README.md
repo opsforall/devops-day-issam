@@ -39,6 +39,16 @@ In the search bar of the Azure portal type `App registrations` and click on it. 
 
 - Click `Add`
 
+  ************************
+
+  how to get values !!!!!
+
+  gh auth login
+
+  gh api repos/anouarjridi/azure-aks-project --jq '{Organization: .owner.login, Organization_ID: .owner.id, Repository: .name, Repository_ID: .id}'
+  
+  ************************
+
 ### Step 4: Create role binding for service principale
 
 1. Go to your subscription and click on `Access control (IAM)`
