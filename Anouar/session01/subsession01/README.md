@@ -1,4 +1,4 @@
-# Azure AKS - Session 01: Terraform Configuration & Testing
+# Azure AKS - Subsession 01: Terraform Configuration & Testing
 
 This session covers the fundamentals of configuring and testing Terraform for Azure infrastructure with AKS.
 
