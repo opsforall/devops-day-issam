@@ -85,3 +85,10 @@ terraform apply
 ```
 
 Type `yes`
+
+###  Step 5: Destroy Resources
+```bash
+terraform destroy
+```
+
+Type `yes`
