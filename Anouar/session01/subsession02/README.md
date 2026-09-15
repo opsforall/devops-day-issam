@@ -33,7 +33,7 @@ terraform init
 
 ## Configure workspace
 
-### Step 1: Create a workspace
+### Step 1: Create a workspace ( in terminal )
 Create a namespace named `dev`
 ```bash
 terraform workspace new dev
