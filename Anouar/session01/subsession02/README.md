@@ -26,7 +26,7 @@ terraform {
 
 ### Step 2: Initialize Terraform
 
-Open the terminal inside the folde
+Open the terminal inside the folder
 ```bash
 terraform init
 ```
