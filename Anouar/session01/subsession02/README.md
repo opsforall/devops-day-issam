@@ -12,7 +12,7 @@ To configure `backend` you need to create a file named `backend.tf` in the root 
 terraform {
   # Terraform configuration for Azure backend.
   backend "azurerm" {
-    resource_group_name  = "anouar-jridi-backend-tf-rg"
+    resource_group_name  = "firstname-lastname-backend-tf-rg"
     storage_account_name = "terrformst"
     container_name       = "terrformstate"
     key                  = "aks/terraform.tfstate"
