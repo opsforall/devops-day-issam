@@ -1,42 +1,42 @@
 # creating AKS cluster
 resource "azurerm_kubernetes_cluster" "aks-cluster" {
-  name                = "${var.fullname}-aks-${var.env}"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  dns_prefix          = var.resource_group_name
-  kubernetes_version  = var.cluster_version
-  node_resource_group = "${var.fullname}-aks-nodes-rg-${var.env}"
+  name                    = "${var.fullname}-aks-${var.env}"
+  location                = var.location
+  resource_group_name     = var.resource_group_name
+  dns_prefix              = var.resource_group_name
+  kubernetes_version      = var.cluster_version
+  node_resource_group     = "${var.fullname}-aks-nodes-rg-${var.env}"
   private_cluster_enabled = var.private_cluster_enabled
   tags = {
     "environment" = var.env
     "created_by"  = var.fullname
   }
   default_node_pool {
-    name                = "defaultpool"
-    vm_size             = var.master_vm_size
-    zones               = var.master_availability_zones
-    auto_scaling_enabled = true
-    max_count           = var.master_max_count
-    min_count           = var.master_min_count
-    vnet_subnet_id      = var.vnet_subnet_id
-    os_disk_size_gb     = var.master_os_disk_size_gb
+    name                        = "defaultpool"
+    vm_size                     = var.master_vm_size
+    zones                       = var.master_availability_zones
+    auto_scaling_enabled        = true
+    max_count                   = var.master_max_count
+    min_count                   = var.master_min_count
+    vnet_subnet_id              = var.vnet_subnet_id
+    os_disk_size_gb             = var.master_os_disk_size_gb
     temporary_name_for_rotation = "master"
-    type                = "VirtualMachineScaleSets"
+    type                        = "VirtualMachineScaleSets"
     node_labels = {
       "nodepool-type" = "system"
       "environment"   = var.env
       "nodepoolos"    = "linux"
     }
     upgrade_settings {
-      max_surge                     = "33%"   # allow up to 33% extra nodes during upgrade
-      drain_timeout_in_minutes      = 30      # timeout for draining a node
-      node_soak_duration_in_minutes = 10      # wait time before node is considered stable
+      max_surge                     = "33%" # allow up to 33% extra nodes during upgrade
+      drain_timeout_in_minutes      = 30    # timeout for draining a node
+      node_soak_duration_in_minutes = 10    # wait time before node is considered stable
     }
     tags = {
       "nodepool-type" = "system"
       "environment"   = var.env
       "nodepoolos"    = "linux"
-      "created_by"  = var.fullname
+      "created_by"    = var.fullname
     }
   }
 
@@ -45,14 +45,14 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
   }
 
   network_profile {
-    network_plugin = "azure"
+    network_plugin      = "azure"
     network_plugin_mode = "overlay"
-    network_data_plane = "cilium"
-    pod_cidr = "10.244.0.0/16"
-    service_cidr = "10.0.0.0/16"
-    dns_service_ip = "10.0.0.10"
-    load_balancer_sku  = "standard"
-    outbound_type      = "loadBalancer"
+    network_data_plane  = "cilium"
+    pod_cidr            = "10.244.0.0/16"
+    service_cidr        = "10.0.0.0/16"
+    dns_service_ip      = "10.0.0.10"
+    load_balancer_sku   = "standard"
+    outbound_type       = "loadBalancer"
   }
 
   auto_scaler_profile {
@@ -106,11 +106,11 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
 
 # role assignment for AKS to pull images from ACR
 resource "azurerm_role_assignment" "role_acr_pull" {
-  scope                            =  var.acr_id
-  role_definition_name             = "AcrPull"
-  principal_id                     = azurerm_kubernetes_cluster.aks-cluster.kubelet_identity[0].object_id
-      # skip_service_principal_aad_check = true
-  depends_on                       = [azurerm_kubernetes_cluster.aks-cluster]
+  scope                = var.acr_id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_kubernetes_cluster.aks-cluster.kubelet_identity[0].object_id
+  # skip_service_principal_aad_check = true
+  depends_on = [azurerm_kubernetes_cluster.aks-cluster]
 }
 
 # External DNS zone role assignment for AKS
@@ -123,5 +123,5 @@ resource "azurerm_role_assignment" "dns_contrib" {
   scope                = data.azurerm_dns_zone.dns_zone.id
   role_definition_name = "DNS Zone Contributor"
   principal_id         = azurerm_kubernetes_cluster.aks-cluster.kubelet_identity[0].object_id
-  depends_on           = [azurerm_kubernetes_cluster.aks-cluster, data.azurerm_dns_zone.dns_zone ]
+  depends_on           = [azurerm_kubernetes_cluster.aks-cluster, data.azurerm_dns_zone.dns_zone]
 }

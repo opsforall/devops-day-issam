@@ -40,11 +40,11 @@ variable "master_vm_size" {
 }
 
 variable "master_os_disk_size_gb" {
-  type = number 
+  type = number
 }
 
 variable "master_availability_zones" {
-  type = list(string) 
+  type = list(string)
 }
 
 # worker nodes
@@ -57,7 +57,7 @@ variable "worker_vm_size" {
 }
 
 variable "worker_mode" {
-  type        = string
+  type = string
 }
 
 variable "worker_availability_zones" {

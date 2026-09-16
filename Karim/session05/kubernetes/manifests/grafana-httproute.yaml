@@ -1,0 +1,15 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana-route
+  namespace: monitoring
+spec:
+  parentRefs:
+  - name: public-gateway
+    namespace: envoy-gateway-system
+  hostnames:
+  - yourfullname-grafana.eks.karimarous.com
+  rules:
+  - backendRefs:
+    - name: kube-prometheus-stack-grafana
+      port: 80

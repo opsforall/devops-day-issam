@@ -1,0 +1,52 @@
+name: Destroy tools
+
+on:
+  workflow_dispatch:
+    inputs:
+      workspace:
+        description: "Select our Terraform workspace to use"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+      cluster_name:
+        description: "Put the name of the EKS cluster to use"
+        required: true
+        default: "fullname-dev-eks"
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  terraform-destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.14.0
+      - name: Init
+        working-directory: ./
+        run: terraform init -backend-config="bucket=${{ secrets.TF_BACKEND_S3_BUCKET_NAME }}" -backend-config="key=${{ secrets.TF_BACKEND_S3_BUCKET_KEY }}" -backend-config="region=${{ secrets.TF_BACKEND_S3_BUCKET_REGION }}" 
+      - name: Terraform workspace select
+        working-directory: ./
+        run: terraform workspace select ${{ github.event.inputs.workspace }} || terraform workspace new ${{ github.event.inputs.workspace }}
+      - name: Terraform plan destroy
+        run: terraform plan -destroy -var cluster_name=${{ github.event.inputs.cluster_name }}
+        working-directory: ./      
+      - name: Terraform Apply
+        run: terraform destroy -var cluster_name=${{ github.event.inputs.cluster_name }} -auto-approve
+        working-directory: ./
+        

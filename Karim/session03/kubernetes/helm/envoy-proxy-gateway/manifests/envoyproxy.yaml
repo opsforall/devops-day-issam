@@ -1,0 +1,27 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: ep-envoy-proxy
+  namespace: envoy-gateway-system
+spec:
+  logging:
+    level:
+      default: warn
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyHpa:
+        maxReplicas: 5
+        metrics:
+          - resource:
+              name: cpu
+              target:
+                averageUtilization: 60
+                type: Utilization
+            type: Resource
+        minReplicas: 2
+      envoyService:
+        type: LoadBalancer
+        externalTrafficPolicy: Cluster
+      envoyDeployment:
+        replicas: 2   

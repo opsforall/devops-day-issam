@@ -13,7 +13,7 @@ resource "azurerm_subnet" "aks_subnet" {
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.virtual_network.name
   address_prefixes     = var.aks_subnet_address_prefix
-  depends_on = [ azurerm_virtual_network.virtual_network, azurerm_resource_group.rg ]
+  depends_on           = [azurerm_virtual_network.virtual_network, azurerm_resource_group.rg]
 }
 
 # NSG for aks subnet
@@ -21,44 +21,44 @@ resource "azurerm_network_security_group" "aks_nsg" {
   name                = "aks-nsg"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg.name
-  tags = var.tags
-  depends_on = [ azurerm_resource_group.rg ]
+  tags                = var.tags
+  depends_on          = [azurerm_resource_group.rg]
 }
 
 resource "azurerm_network_security_rule" "aks_nsg_inbound" {
-  for_each = local.aks_nsg_inbound_rules
+  for_each                    = local.aks_nsg_inbound_rules
   name                        = each.value.name
   priority                    = each.value.priority
-  direction                   = each.value.rule_type 
+  direction                   = each.value.rule_type
   access                      = each.value.access
   protocol                    = each.value.protocol
   source_port_range           = each.value.source_port_range
   destination_port_range      = each.value.destination_port_range
-  source_address_prefix       = each.value.source_address_prefix_cidr 
+  source_address_prefix       = each.value.source_address_prefix_cidr
   destination_address_prefix  = each.value.destination_address_prefix
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.aks_nsg.name
-  depends_on = [ azurerm_network_security_group.aks_nsg, azurerm_resource_group.rg ]
+  depends_on                  = [azurerm_network_security_group.aks_nsg, azurerm_resource_group.rg]
 }
 
 resource "azurerm_network_security_rule" "aks_nsg_outbound" {
-  for_each = local.aks_nsg_outbound_rules
+  for_each                    = local.aks_nsg_outbound_rules
   name                        = each.value.name
   priority                    = each.value.priority
-  direction                   = each.value.rule_type 
+  direction                   = each.value.rule_type
   access                      = each.value.access
   protocol                    = each.value.protocol
   source_port_range           = each.value.source_port_range
   destination_port_range      = each.value.destination_port_range
-  source_address_prefix       = each.value.source_address_prefix_cidr 
+  source_address_prefix       = each.value.source_address_prefix_cidr
   destination_address_prefix  = each.value.destination_address_prefix
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.aks_nsg.name
-  depends_on = [ azurerm_network_security_group.aks_nsg, azurerm_resource_group.rg ]
+  depends_on                  = [azurerm_network_security_group.aks_nsg, azurerm_resource_group.rg]
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_associate_aks_subnet" {
   subnet_id                 = azurerm_subnet.aks_subnet.id
   network_security_group_id = azurerm_network_security_group.aks_nsg.id
-  depends_on = [ azurerm_network_security_group.aks_nsg, azurerm_subnet.aks_subnet ]
+  depends_on                = [azurerm_network_security_group.aks_nsg, azurerm_subnet.aks_subnet]
 }

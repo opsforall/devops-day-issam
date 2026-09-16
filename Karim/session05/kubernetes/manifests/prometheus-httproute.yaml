@@ -1,0 +1,15 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: prometheus-route
+  namespace: monitoring
+spec:
+  parentRefs:
+  - name: public-gateway
+    namespace: envoy-gateway-system
+  hostnames:
+  - yourfullname-prometheus.eks.karimarous.com
+  rules:
+  - backendRefs:
+    - name: kube-prometheus-stack-prometheus
+      port: 9090
