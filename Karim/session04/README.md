@@ -1,8 +1,8 @@
-# EKS tools - Session 04: Install kube-pometheus-stack pipelines
+# AKS tools - Session 04: Install kube-pometheus-stack pipelines
 
 This session covers the installation of kubeflow pipelines using terraform
 
-## Install kube-prometheus-stack in eks
+## Install kube-prometheus-stack in AKS
 ### kube-prometheus-stack config
 1. Inside the folder `helm`, create folder named `kube-prometheus-stack`
 2. Create a file named `values.yaml` in the folder `kube-prometheus-stack` and copy the following code
@@ -19,7 +19,7 @@ prometheus:
 
 ### Deploy kube-prometheus-stack 
 #### Method 1: Manually
-1. Zxecute these commands in your `terminal` (please ensure that you're connected to the cluster EKS):
+1. Zxecute these commands in your `terminal` (please ensure that you're connected to the cluster AKS):
 
 ```bash
 kubectl create namespace monitoring
@@ -51,7 +51,7 @@ resource "helm_release" "kube_prometheus_stack" {
 }
 ```
 
-2. Push the code to your project `eks-tools` 
+2. Push the code to your project `aks-tools` 
 
 3. In your github repository, click on `Actions`
 

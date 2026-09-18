@@ -1,4 +1,4 @@
-# EKS tools - Session 03: Install Envoy proxy gateway and Cert-manager
+# AKS tools - Session 03: Install Envoy proxy gateway and Cert-manager
 
 This session covers the installation of envoy proxy and cert-manager using terraform
 
@@ -157,7 +157,7 @@ resource "kubectl_manifest" "cluster_issuer" {
 }
 ```
 
-8. Push to Github repo `eks-tools`
+8. Push to Github repo `aks-tools`
 
 ## Install tools
 

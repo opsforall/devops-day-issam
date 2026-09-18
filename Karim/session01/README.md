@@ -1,4 +1,4 @@
-# EKS Tools - Session 01: Configure providers and backend
+# AKS Tools - Session 01: Configure providers and backend
 
 ## Configure Terraform backend
 
@@ -9,7 +9,7 @@ terraform {
   # Terraform configuration for Azure backend.
   backend "s3" {
     bucket = "your-terraform-state-bucket"
-    key    = "eks-tools/firstname_lastname/terraform.tfstate"
+    key    = "aks-tools/firstname_lastname/terraform.tfstate"
     region       = "bucket-region"
     encrypt      = true
     use_lockfile = true
@@ -27,9 +27,9 @@ Update `firstname_lastname` with you name, example `karim_arous`
 ```bash
 terraform {
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 6.32.0"
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "4.59.0"
     }
     helm = {
       source = "hashicorp/helm"
@@ -48,30 +48,32 @@ terraform {
 }
 
 # azurerm Provider configuration
-provider "aws" {
-  region = "us-east-1"
+provider "azurerm" {
+  features {}
+  resource_provider_registrations = "none"
+  subscription_id = ""
+  tenant_id       = ""
 }
 
-data "aws_eks_cluster" "eks_cluster" {
+data "azurerm_kubernetes_cluster" "example" {
   name                = var.cluster_name
-}
-
-data "aws_eks_cluster_auth" "eks_cluster_auth" {
-  name = var.cluster_name
+  resource_group_name = var.rg_name
 }
 
 # kubernetes Provider configuration
 provider "kubernetes" {
   host                   = local.kube_host
+  client_certificate     = local.kube_client_certificate
+  client_key             = local.kube_client_key
   cluster_ca_certificate = local.kube_cluster_ca_certificate
-  token                  = local.token
 }
 
 # kubectl Provider configuration
 provider "kubectl" {
   host                   = local.kube_host
+  client_certificate     = local.kube_client_certificate
+  client_key             = local.kube_client_key
   cluster_ca_certificate = local.kube_cluster_ca_certificate
-  token                  = local.token
 
   load_config_file = false
 }
@@ -80,19 +82,22 @@ provider "kubectl" {
 provider "helm" {
   kubernetes {
     host                   = local.kube_host
+    client_certificate     = local.kube_client_certificate
+    client_key             = local.kube_client_key
     cluster_ca_certificate = local.kube_cluster_ca_certificate
-    token                  = local.token
   }
 }
+
 ```
 
 2. Create a file named `locals.tf` in the root directory of the project and copy the following content
 
 ```bash
 locals {
-  kube_host                   = data.aws_eks_cluster.eks_cluster.endpoint
-  kube_cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks_cluster.certificate_authority[0].data)
-  token = data.aws_eks_cluster_auth.eks_cluster_auth.token
+  kube_host                   = data.azurerm_kubernetes_cluster.my_cluster.kube_admin_config[0].host
+  kube_client_certificate     = base64decode(data.azurerm_kubernetes_cluster.my_cluster.kube_admin_config[0].client_certificate)
+  kube_client_key             = base64decode(data.azurerm_kubernetes_cluster.my_cluster.kube_admin_config[0].client_key)
+  kube_cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.my_cluster.kube_admin_config[0].cluster_ca_certificate)
 }
 ```
 
@@ -107,10 +112,10 @@ variable "cluster_name" {
 4. Create a file named `terraform.tfvars` in the root directory of the project and copy the following content
 
 ```bash
-cluster_name = "youreksname"
+cluster_name = "youraksname"
 ```
 
-5. Update `cluster_name` value with your real eks cluster name
+5. Update `cluster_name` value with your real AKS cluster name
 
 ## Test configuration
 

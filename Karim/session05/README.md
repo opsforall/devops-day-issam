@@ -1,4 +1,4 @@
-# EKS tools - Session 05: Configure certificates and deploy gateway components 
+# AKS tools - Session 05: Configure certificates and deploy gateway components 
 
 This session covers the configuration of certificates and deploy of gateway components using terraform
 
@@ -15,7 +15,7 @@ metadata:
 spec:
   secretName: grafana-tls
   dnsNames:
-  - yourfullname-grafana.eks.karimarous.com
+  - yourfullname-grafana.aks.karimarous.com
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt-prod
@@ -32,7 +32,7 @@ metadata:
 spec:
   secretName: prometheus-tls
   dnsNames:
-  - yourfullname-prometheus.eks.karimarous.com
+  - yourfullname-prometheus.aks.karimarous.com
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt-prod
@@ -85,7 +85,7 @@ spec:
   - name: public-gateway
     namespace: envoy-gateway-system
   hostnames:
-  - yourfullname-grafana.eks.karimarous.com
+  - yourfullname-grafana.aks.karimarous.com
   rules:
   - backendRefs:
     - name: kube-prometheus-stack-grafana
@@ -107,7 +107,7 @@ spec:
   - name: public-gateway
     namespace: envoy-gateway-system
   hostnames:
-  - yourfullname-prometheus.eks.karimarous.com
+  - yourfullname-prometheus.aks.karimarous.com
   rules:
   - backendRefs:
     - name: kube-prometheus-stack-prometheus
@@ -138,7 +138,7 @@ spec:
       namespaces:
         from: All
   - name: prometheus-https
-    hostname: yourfullname-prometheus.eks.karimarous.com
+    hostname: yourfullname-prometheus.aks.karimarous.com
     port: 443
     protocol: HTTPS
     tls:
@@ -150,7 +150,7 @@ spec:
       namespaces:
         from: All
   - name: grafana-https
-    hostname: yourfullname-grafana.eks.karimarous.com
+    hostname: yourfullname-grafana.aks.karimarous.com
     port: 443
     protocol: HTTPS
     tls:
@@ -189,7 +189,7 @@ resource "kubectl_manifest" "http_route_prometheus" {
 }
 ```
 
-9. Push to Github repo `eks-tools`
+9. Push to Github repo `aks-tools`
 
 ## Install tools
 
@@ -200,12 +200,12 @@ resource "kubectl_manifest" "http_route_prometheus" {
 4. On the left panel, click on `Hosted zones` and click on `karimarous.com` Hosted Zone Name
 5. Click on `Create record`
 6. fill the following with:
-- `Record name` with  yourfullname.eks (don't forget to update `yourfullname` with your full name, example `karimarous`)
+- `Record name` with  yourfullname.aks (don't forget to update `yourfullname` with your full name, example `karimarous`)
 - Click on `Alias`, click on `Choose Endpoint` drop down and choose `Alias to Application and Classic Load Balancer`. Click on `Choose region`, search for `us-east-1` and choose it. Click on `Choose Load Balancer` and choose the load balancer created.
 7. Click on `Create records`
 8. Wait `10 minutes` and copy the following url in a `Chrome new tab` (don't forget to update `yourfullname` with your full name, example karimarous)
 ```bash
-yourfullname-grafana.eks.karimarous.com
+yourfullname-grafana.aks.karimarous.com
 ```
 
 ### Step 3: desinstall tools 

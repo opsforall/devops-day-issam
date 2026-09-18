@@ -1,11 +1,11 @@
 terraform {
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 6.32.0"
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "4.61.0"
     }
     helm = {
-      source  = "hashicorp/helm"
+      source = "hashicorp/helm"
       version = "2.17.0"
     }
     kubernetes = {
@@ -21,30 +21,32 @@ terraform {
 }
 
 # azurerm Provider configuration
-provider "aws" {
-  region = "us-east-1"
+provider "azurerm" {
+  features {}
+  resource_provider_registrations = "none"
+  subscription_id = ""
+  tenant_id       = ""
 }
 
-data "aws_eks_cluster" "eks_cluster" {
-  name = var.cluster_name
-}
-
-data "aws_eks_cluster_auth" "eks_cluster_auth" {
-  name = var.cluster_name
+data "azurerm_kubernetes_cluster" "example" {
+  name                = var.cluster_name
+  resource_group_name = var.rg_name
 }
 
 # kubernetes Provider configuration
 provider "kubernetes" {
   host                   = local.kube_host
+  client_certificate     = local.kube_client_certificate
+  client_key             = local.kube_client_key
   cluster_ca_certificate = local.kube_cluster_ca_certificate
-  token                  = local.token
 }
 
 # kubectl Provider configuration
 provider "kubectl" {
   host                   = local.kube_host
+  client_certificate     = local.kube_client_certificate
+  client_key             = local.kube_client_key
   cluster_ca_certificate = local.kube_cluster_ca_certificate
-  token                  = local.token
 
   load_config_file = false
 }
@@ -53,7 +55,8 @@ provider "kubectl" {
 provider "helm" {
   kubernetes {
     host                   = local.kube_host
+    client_certificate     = local.kube_client_certificate
+    client_key             = local.kube_client_key
     cluster_ca_certificate = local.kube_cluster_ca_certificate
-    token                  = local.token
   }
 }

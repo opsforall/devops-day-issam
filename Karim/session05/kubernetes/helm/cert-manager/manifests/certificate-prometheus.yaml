@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: prometheus-tls
   dnsNames:
-  - yourfullname-prometheus.eks.karimarous.com
+  - yourfullname-prometheus.aks.karimarous.com
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt-prod

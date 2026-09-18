@@ -1,5 +1,6 @@
 locals {
-  kube_host                   = data.aws_eks_cluster.eks_cluster.endpoint
-  kube_cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks_cluster.certificate_authority[0].data)
-  token                       = data.aws_eks_cluster_auth.eks_cluster_auth.token
+  kube_host                   = data.azurerm_kubernetes_cluster.my_cluster.kube_admin_config[0].host
+  kube_client_certificate     = base64decode(data.azurerm_kubernetes_cluster.my_cluster.kube_admin_config[0].client_certificate)
+  kube_client_key             = base64decode(data.azurerm_kubernetes_cluster.my_cluster.kube_admin_config[0].client_key)
+  kube_cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.my_cluster.kube_admin_config[0].cluster_ca_certificate)
 }
