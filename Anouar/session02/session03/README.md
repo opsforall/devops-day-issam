@@ -41,7 +41,7 @@ In the search bar of the Azure portal type `App registrations` and click on it. 
 
   ************************
 
-  how to get values !!!!!
+  use gh to get values 
 
   gh auth login
 
