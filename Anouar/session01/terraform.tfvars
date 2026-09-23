@@ -1,2 +1,2 @@
-location = "francecentral"
+location = "westeurope"
 studentid = "studentid" 

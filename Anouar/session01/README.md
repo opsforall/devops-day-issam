@@ -80,14 +80,14 @@ variable "tags" {
 
 ### Step 4: Fill Terraform variables
 
-To add the Azure resource group you need to create a file named `main.tf` in the root directory and copy the following content
+To add the Azure resource group you need to create a file named `terraform.tfvars` in the root directory and copy the following content
 
 ```bash
-location = "francecentral"
+location = "westeurope"
 studentid = "studentid" 
 ```
 
-in case you have the access of `student1` in `Azure`, update the value of variable `studentid` with `"student1-rg-${local.env}"` 
+Since each one of you have access to an Azure account, use the user name for example `"student1"` that you have and replace the value of the variable named `studentid` that exit in `terraform.tfvars` with your user name.
 
 ### Step 4: Add an Azure resource group Terraform configuration
 
@@ -96,7 +96,7 @@ To add the Azure resource group you need to create a file named `main.tf` in the
 ```bash
 resource "azurerm_resource_group" "rg" {
   name     = "${var.studentid}-rg-${local.env}"
-  location = "francecentral"
+  location = var.location
 }
 ```
 
