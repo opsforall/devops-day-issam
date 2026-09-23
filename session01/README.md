@@ -93,7 +93,7 @@ Since each one of you have access to an Azure account, use the user name for exa
 
 ### Step 5: Add locals
 
-To add the Azure resource group you need to create a file named `locals.tf` in the root directory and copy the following content
+To add locals, you need to create a file named `locals.tf` in the root directory and copy the following content
 
 ```bash
 locals {
