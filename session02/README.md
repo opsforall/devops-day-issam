@@ -63,29 +63,6 @@ In the search bar of the Azure portal type `App registrations` and click on it. 
 
 6. Click `Review + assign`
 
-## Update Terraform
-
-1. Update the block `provider` in `provider.tf` file with the following code
-
-```bash
-provider "azurerm" {
-  features {}
-  resource_provider_registrations = "none"
-}
-```
-
-3. Update the block `backend` in `backend.tf` file with the following code
-
-```bash
-
-  backend "azurerm" {
-    resource_group_name  = ""
-    storage_account_name = ""
-    container_name       = ""
-    key                  = ""
-  }
-```
-
 ## Configure CICD
 
 ### Step 1: Configure Github Actions secrets
@@ -246,7 +223,25 @@ jobs:
 
 ```
 
+## Update Terraform
 
+1. Update the block `provider` in `provider.tf` file with the following code
+
+```bash
+provider "azurerm" {
+  features {}
+  resource_provider_registrations = "none"
+}
+```
+
+3. Replace all the code that exist in the in `backend.tf` file with the following code
+
+```bash
+terraform {
+  backend "azurerm" {
+  }
+}
+```
 
 8. Push to Github repo `azure-aks-project`
 
