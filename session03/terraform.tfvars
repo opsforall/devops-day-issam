@@ -1,9 +1,5 @@
 location = "westeurope"
 fullname = "karim-arous"
-tags = {
-  "project" : "azure-aks-project",
-  "owner" : "karim-arous"
-}
 vnet_address_space        = ["10.10.0.0/16"]
 aks_subnet_address_prefix = ["10.10.0.0/21"]
 cluster_version           = "1.33.3"

@@ -88,7 +88,34 @@ provider "azurerm" {
 
 ## Configure CICD
 
-### Step 1: Create provision workflow
+### Step 1: Configure Github Actions secrets
+
+1. Go to your github repository `azure-aks-project` and click on `Settings`
+
+2. Click on `Secrets and variables` in the left section then click on `Actions`
+
+3. Click on `New repository secret`
+Create the following secrets:
+- AZURE_CLIENT_ID 
+Fill it with the value of Application (client) ID
+- AZURE_TENANT_ID
+Fill it with the value of Directory (tenant) ID that exist in the App registration created in the section `Obtain a Client ID`
+- AZURE_SUBSCRIPTION_ID
+Fill it with the value of your Subscription
+You can get the subscription value using this command
+```
+az account show --query id -o tsv
+```
+- TF_BACKEND_RG
+Ask the instructor if needed
+- TF_BACKEND_STORAGE_ACCOUNT
+Ask the instructor if needed
+- TF_BACKEND_CONTAINER
+Ask the instructor if needed
+- TF_BACKEND_KEY
+Ask the instructor if needed
+
+### Step 2: Create workflows
 
 1. Create a folder in the root directory named `.github`.
 
@@ -171,8 +198,7 @@ on:
         type: choice
         options:
           - dev
-
-
+          
 permissions:
   id-token: write
   contents: read
@@ -220,30 +246,7 @@ jobs:
 
 ```
 
-5. Go to your github repository and click on `Settings`
 
-6. Click on `Secrets and variables` in the left section then click on `Actions`
-
-7. Click on `New repository secret`
-Create the following secrets:
-- AZURE_CLIENT_ID 
-Fill it with the value of Application (client) ID
-- AZURE_TENANT_ID
-Fill it with the value of Directory (tenant) ID that exist in the App registration created in the section `Obtain a Client ID`
-- AZURE_SUBSCRIPTION_ID
-Fill it with the value of your Subscription
-You can get the subscription value using this command
-```
-az account show --query id -o tsv
-```
-- TF_BACKEND_RG
-Ask the instructor if needed
-- TF_BACKEND_STORAGE_ACCOUNT
-Ask the instructor if needed
-- TF_BACKEND_CONTAINER
-Ask the instructor if needed
-- TF_BACKEND_KEY
-Ask the instructor if needed
 
 8. Push to Github repo `azure-aks-project`
 
