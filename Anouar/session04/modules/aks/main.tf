@@ -67,7 +67,6 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
   }
 }
 
-/*
 resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
   name                         = var.worker_node_name
   kubernetes_cluster_id        = azurerm_kubernetes_cluster.aks-cluster.id
@@ -101,27 +100,4 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
     ]
   }
   depends_on = [ azurerm_kubernetes_cluster.aks-cluster ]
-}
-*/
-
-# role assignment for AKS to pull images from ACR
-resource "azurerm_role_assignment" "role_acr_pull" {
-  scope                = var.acr_id
-  role_definition_name = "AcrPull"
-  principal_id         = azurerm_kubernetes_cluster.aks-cluster.kubelet_identity[0].object_id
-  # skip_service_principal_aad_check = true
-  depends_on = [azurerm_kubernetes_cluster.aks-cluster]
-}
-
-# External DNS zone role assignment for AKS
-data "azurerm_dns_zone" "dns_zone" {
-  name                = var.dns_zone_name
-  resource_group_name = var.dns_zone_rg_name
-}
-
-resource "azurerm_role_assignment" "dns_contrib" {
-  scope                = data.azurerm_dns_zone.dns_zone.id
-  role_definition_name = "DNS Zone Contributor"
-  principal_id         = azurerm_kubernetes_cluster.aks-cluster.kubelet_identity[0].object_id
-  depends_on           = [azurerm_kubernetes_cluster.aks-cluster, data.azurerm_dns_zone.dns_zone]
 }

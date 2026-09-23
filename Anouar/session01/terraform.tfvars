@@ -1,0 +1,2 @@
+location = "francecentral"
+studentid = "studentid" 

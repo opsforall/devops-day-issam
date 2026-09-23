@@ -57,5 +57,5 @@ module "aks" {
   worker_node_taints         = var.worker_node_taints
   dns_zone_name              = var.dns_zone_name
   dns_zone_rg_name           = var.dns_zone_rg_name
-  depends_on                 = [module.network, azurerm_container_registry.acr]
+  depends_on                 = [module.network]
 }

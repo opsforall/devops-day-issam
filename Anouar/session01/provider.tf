@@ -4,15 +4,17 @@ terraform {
     # Required Azure Provider
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "4.59.0"
+      version = "5.6.0"
     }
   }
   # Required Terraform version
-  required_version = ">= 1.14.0"
+  required_version = ">= 1.15.0"
 }
 
 # Azure Provider configuration
 provider "azurerm" {
   features {}
   resource_provider_registrations = "none"
+  subscription_id                 = ""
+  tenant_id                       = ""
 }
