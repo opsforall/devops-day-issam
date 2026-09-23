@@ -54,12 +54,13 @@ terraform {
   backend "azurerm" {
     resource_group_name  = "backend-tf-rg"
     storage_account_name = "backendterraformproject"
-    container_name       = "terrformstate"
-    key                  = "aks/terraform.tfstate"
+    container_name       = "terraformstate"
+    key                  = "aks-infra/studentid/terraform.tfstate"
   }
 }
 ```
 
+Since each one of you have access to an Azure account, use the user name for example `"student1"` that you have and replace `studentid` that exist in the attribute `key` in `backend.tf` with your `studentid`.
 ### Step 3: Add Terraform variables
 
 To add the Azure resource group you need to create a file named `variables.tf` in the root directory and copy the following content
