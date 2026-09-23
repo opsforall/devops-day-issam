@@ -5,8 +5,9 @@ Welcome to the `Session00` in Azure AKS.
 ## Prerequisites
 
 - An Azure subscription
-- Terraform >= 1.14.0 installed
+- Terraform >= 1.15.0 installed
 - Azure CLI installed and authenticated
+- VS Code installed
 
 ## Let's begin
 

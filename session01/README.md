@@ -90,7 +90,19 @@ studentid = "studentid"
 
 Since each one of you have access to an Azure account, use the user name for example `"student1"` that you have and replace the value of the variable named `studentid` that exit in `terraform.tfvars` with your user name.
 
-### Step 4: Add an Azure resource group Terraform configuration
+
+### Step 5: Add locals
+
+To add the Azure resource group you need to create a file named `locals.tf` in the root directory and copy the following content
+
+```bash
+locals {
+  env = terraform.workspace
+}
+
+```
+
+### Step 6: Add an Azure resource group Terraform configuration
 
 To add the Azure resource group you need to create a file named `main.tf` in the root directory and copy the following content
 
