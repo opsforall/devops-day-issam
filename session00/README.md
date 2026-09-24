@@ -8,6 +8,7 @@ Welcome to the `Session00` in Azure AKS.
 - Terraform >= 1.15.0 installed
 - Azure CLI installed and authenticated
 - VS Code installed
+- Github CLI installed
 
 ## Let's begin
 

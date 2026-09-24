@@ -12,14 +12,14 @@ In the search bar of the Azure portal type `App registrations` and click on it. 
 
 1. Click on `New Registration` 
 2. fill it as the following:
-- In the name section put `firstname-lastname-terraform` example `karim-arous-terraform` 
-- in the `Supported account types` choose `Single tenant Only - Répertoire par défaut `
+- In the `name` section put `studentid-terraform` example `student1-terraform` 
+- in the `Supported account types` choose `Single tenant Only - KA Dir`
 3. Click on `Register`
 4. Copy The `Application (client) ID` and `Directory (tenant) ID` values and save them in a safe place. We wil use them in the next steps.
 
 ### Step 3: Create Federated Credentials
 
-1. Inside the `App Registration` that we have created it in the previous step, click on `Manage` then click on `Certificates & secrets` in the left panel.
+1. Inside the `App Registration` that we have created in the previous step, click on `Manage` then click on `Certificates & secrets` in the left panel.
 
 2. Click on Federated credentials
 
@@ -31,23 +31,30 @@ In the search bar of the Azure portal type `App registrations` and click on it. 
  
 - In the section that will showup, fill it with:
 * Organization: `your-org`, example: `karimarous` is the name of my Organization
+* Organization ID: `your-org`, example: `45014080` is the name of my Organization
+
+In order to get your Organization ID value, copy these commands in your `VS Code` CLI:
+
+```bash
+gh auth login
+```
+```bash
+gh api user --jq '.id'
+```
+
 * Repository: `azure-aks-project`
+* Repository ID: ``
+To get this value, copy this command in your `VS Code` CLI and don't forget to replace `username` with your `Github` user:
+
+```bash
+gh api repos/username/azure-aks-project --jq '.id'
+```
 * Entity type: `Branch`
 * GitHub branch name: `main`
 
 - In the section `Credential details`, go to `Name` and put `azure-aks-project`
 
 - Click `Add`
-
-  ************************
-
-  use gh to get values 
-
-  gh auth login
-
-  gh api repos/anouarjridi/azure-aks-project --jq '{Organization: .owner.login, Organization_ID: .owner.id, Repository: .name, Repository_ID: .id}'
-  
-  ************************
 
 ### Step 4: Create role binding for service principale
 

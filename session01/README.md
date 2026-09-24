@@ -74,9 +74,6 @@ variable "studentid" {
   type = string
 }
 
-variable "tags" {
-  type = map(string)
-}
 ```
 
 ### Step 4: Fill Terraform variables
