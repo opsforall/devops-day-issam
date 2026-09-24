@@ -5,18 +5,9 @@
 
 ### Step 1: Go to App registration
 
-In the search bar of the Azure portal type `App registrations` and click on it. Now click on `New Registration`
+In the search bar of the Azure portal type `App registrations` and click on the one that you have created in the other project.  
 
-### Step 2: Create an App registration
-
-1. Click on `New Registration` 
-2. fill it as the following:
-- In the `name` section put `studentid-terraform` example `student1-terraform` 
-- in the `Supported account types` choose `Single tenant Only - KA Dir`
-3. Click on `Register`
-4. Copy The `Application (client) ID` and `Directory (tenant) ID` values and save them in a safe place. We wil use them in the next steps.
-
-### Step 3: Create Federated Credentials
+### Step 2: Create Federated Credentials
 
 1. Inside the `App Registration` that we have created in the previous step, click on `Manage` then click on `Certificates & secrets` in the left panel.
 
@@ -41,33 +32,19 @@ gh auth login
 gh api user --jq '.id'
 ```
 
-* Repository: `azure-aks-project`
+* Repository: `aks-tools`
 * Repository ID: ``
 To get this value, copy this command in your `VS Code` CLI and don't forget to replace `username` with your `Github` user:
 
 ```bash
-gh api repos/username/azure-aks-project --jq '.id'
+gh api repos/karimarous/aks-tools --jq '.id'
 ```
 * Entity type: `Branch`
 * GitHub branch name: `main`
 
-- In the section `Credential details`, go to `Name` and put `azure-aks-project`
+- In the section `Credential details`, go to `Name` and put `aks-tools`
 
 - Click `Add`
-
-### Step 4: Create role binding for service principale
-
-1. Go to your subscription and click on `Access control (IAM)`
-
-2. Click on `Add` and choose `Add Role Assignment` 
-
-3. Go to `Privileged administrator roles`, choose `Owner` and click `Next`
-
-4. Ensure you have choosed `User, group, or service principal` in `Assign access to` section, click `Select members` in Members section. Search for your App registration that you created it in `step 2`, choose it, click `select` and click `Next`
-
-5. In the `What user can do` choose `Allow user to assign all roles (highly privileged)` and then click `Next`
-
-6. Click `Review + assign`
 
 ## Configure CICD
 
@@ -176,6 +153,8 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 ```
 
+Update `studentid`, for example `student1`
+
 4. Create a file named `desinstall-tools.yaml` inside `workflows` and copy the following code
 
 ```bash
@@ -249,6 +228,9 @@ jobs:
 
 ```
 
+Update `studentid`, for example `student1`
+
+
 ## Configure Terraform backend
 
 1. Create a file named `backend.tf` in the root directory of the project and copy the following content
@@ -259,9 +241,6 @@ terraform {
   }
 }
 ```
-Update `firstname_lastname` with you name, example `karim_arous` 
-
-2. Update the values of the backend attributes with AWS S3 backend config (bucket,region)
 
 ## Configure providers
 
@@ -350,18 +329,9 @@ variable "cluster_name" {
 }
 ```
 
-4. Create a file named `terraform.tfvars` in the root directory of the project and copy the following content
+## Provision infrastructure
+1. Push to Github repo `azure-aks-project`
 
-```bash
-cluster_name = "youraksname"
-```
+2. In your github repository, click on `Actions`
 
-5. Update `cluster_name` value with your real AKS cluster name
-
-## Test configuration
-
-1. Run `terraform init`
-
-2. Run `terraform apply -auto-approve` 
-
-3. Run `terraform destroy -auto-approve` 
+3. In the left panel, click on `Provision Infrastructure`, click on `Run workflow` and click on `Run workflow` that apears.

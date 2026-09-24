@@ -62,7 +62,7 @@ gh api repos/username/azure-aks-project --jq '.id'
 
 2. Click on `Add` and choose `Add Role Assignment` 
 
-3. Go to `Privileged administrator roles`, choose `Owner` and click `Next`
+3. Go to `Privileged administrator roles`, choose `Contributor` and click `Next`
 
 4. Ensure you have choosed `User, group, or service principal` in `Assign access to` section, click `Select members` in Members section. Search for your App registration that you created it in `step 2`, choose it, click `select` and click `Next`
 
