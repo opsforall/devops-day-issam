@@ -187,6 +187,9 @@ permissions:
 jobs:
   desintall-tools:
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_rg_name: ${{ inputs.rg_name }}
+      TF_VAR_cluster_name: ${{ inputs.cluster_name }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -198,6 +201,13 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
+
+      - name: Set up kubelogin
+        uses: azure/use-kubelogin@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          kubelogin-version: latest
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
@@ -211,7 +221,7 @@ jobs:
         run: terraform workspace select ${{ github.event.inputs.workspace }} 
       - name: Terraform Plan destroy
         working-directory: ./
-        run: terraform plan -destroy
+        run: terraform plan -var="rg_name=${{ github.event.inputs.rg_name }}" -var="cluster_name=${{ github.event.inputs.cluster_name }}" -destroy -auto-approve
         env:
           ARM_USE_OIDC: true
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -219,12 +229,13 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Terraform Destroy
         working-directory: ./
-        run: terraform destroy -auto-approve
+        run: terraform destroy -var="rg_name=${{ github.event.inputs.rg_name }}" -var="cluster_name=${{ github.event.inputs.cluster_name }}" -auto-approve
         env:
           ARM_USE_OIDC: true
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
 
 ```
 
@@ -251,7 +262,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "4.59.0"
+      version = "5.6.0"
     }
     helm = {
       source = "hashicorp/helm"
@@ -330,8 +341,8 @@ variable "cluster_name" {
 ```
 
 ## Provision infrastructure
-1. Push to Github repo `azure-aks-project`
+1. Push to Github repo `aks-tools`
 
 2. In your github repository, click on `Actions`
 
-3. In the left panel, click on `Provision Infrastructure`, click on `Run workflow` and click on `Run workflow` that apears.
+3. In the left panel, click on `Install tools`, click on `Run workflow` and click on `Run workflow` that apears.
