@@ -1,4 +1,4 @@
-# Azure AKS - Session 03: Configure CICD
+# Azure AKS - Session 02: Configure CICD
 
 This session covers configuration of CICD that will provision and destroy the infrastructure
 

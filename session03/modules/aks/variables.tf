@@ -16,10 +16,6 @@ variable "env" {
   description = "environment"
 }
 
-variable "acr_id" {
-  type = string
-}
-
 variable "cluster_version" {
   type        = string
   description = "AKS cluster version"
@@ -179,12 +175,3 @@ variable "worker_priority" {
   default     = "Regular"
 }
 
-variable "dns_zone_name" {
-  description = "(Optional) The name of the DNS Zone to which the AKS cluster should be granted permissions to create records. This is required if you want to use External DNS with this cluster."
-  type        = string
-}
-
-variable "dns_zone_rg_name" {
-  description = "(Optional) The name of the Resource Group in which the DNS Zone specified in dns_zone_name is located. This is required if you want to use External DNS with this cluster."
-  type        = string
-}

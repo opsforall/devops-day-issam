@@ -1,4 +1,4 @@
-# Azure AKS - Session 05: Add Terraform modules and use them
+# Azure AKS - Session 03: Add Terraform modules and use them
 
 This session covers the creation of Terraform modules and how to use them
 
@@ -10,7 +10,7 @@ This session covers the creation of Terraform modules and how to use them
 ```bash
 # virtual network 
 resource "azurerm_virtual_network" "virtual_network" {
-  name                = "${var.fullname}-${var.env}-virtual-network"
+  name                = "${var.studentid}-${var.env}-virtual-network"
   location            = var.location
   resource_group_name = var.rg_name
   address_space       = var.vnet_address_space
@@ -19,7 +19,7 @@ resource "azurerm_virtual_network" "virtual_network" {
 
 # aks subnets
 resource "azurerm_subnet" "aks_subnet" {
-  name                 = "${var.fullname}-${var.env}-aks-subnet"
+  name                 = "${var.studentid}-aks-subnet-${var.env}"
   resource_group_name  = var.rg_name
   virtual_network_name = azurerm_virtual_network.virtual_network.name
   address_prefixes     = var.aks_subnet_address_prefix
@@ -89,7 +89,7 @@ variable "rg_name" {
   type = string
 }
 
-variable "fullname" {
+variable "studentid" {
   type = string
 }
 
@@ -159,16 +159,16 @@ output "aks_subnet_id" {
 ```bash
 # creating AKS cluster
 resource "azurerm_kubernetes_cluster" "aks-cluster" {
-  name                = "${var.fullname}-aks-${var.env}"
+  name                = "${var.studentid}-aks-${var.env}"
   location            = var.location
   resource_group_name = var.resource_group_name
   dns_prefix          = var.resource_group_name
   kubernetes_version  = var.cluster_version
-  node_resource_group = "${var.fullname}-aks-nodes-rg-${var.env}"
+  node_resource_group = "${var.studentid}-aks-nodes-rg-${var.env}"
   private_cluster_enabled = var.private_cluster_enabled
   tags = {
     "environment" = var.env
-    "created_by"  = var.fullname
+    "created_by"  = var.studentid
   }
   default_node_pool {
     name                = "defaultpool"
@@ -195,7 +195,7 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
       "nodepool-type" = "system"
       "environment"   = var.env
       "nodepoolos"    = "linux"
-      "created_by"  = var.fullname
+      "created_by"  = var.studentid
     }
   }
 
@@ -260,29 +260,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
   }
   depends_on = [ azurerm_kubernetes_cluster.aks-cluster ]
 }
-*/
-
-# role assignment for AKS to pull images from ACR
-resource "azurerm_role_assignment" "role_acr_pull" {
-  scope                            =  var.acr_id
-  role_definition_name             = "AcrPull"
-  principal_id                     = azurerm_kubernetes_cluster.aks-cluster.kubelet_identity[0].object_id
-      # skip_service_principal_aad_check = true
-  depends_on                       = [azurerm_kubernetes_cluster.aks-cluster]
-}
-
-# External DNS zone role assignment for AKS
-data "azurerm_dns_zone" "dns_zone" {
-  name                = var.dns_zone_name
-  resource_group_name = var.dns_zone_rg_name
-}
-
-resource "azurerm_role_assignment" "dns_contrib" {
-  scope                = data.azurerm_dns_zone.dns_zone.id
-  role_definition_name = "DNS Zone Contributor"
-  principal_id         = azurerm_kubernetes_cluster.aks-cluster.kubelet_identity[0].object_id
-  depends_on           = [azurerm_kubernetes_cluster.aks-cluster, data.azurerm_dns_zone.dns_zone ]
-}
 
 ```
 
@@ -307,10 +284,6 @@ variable "env" {
   description = "environment"
 }
 
-variable "acr_id" {
-  type = string
-}
-
 variable "cluster_version" {
   type        = string
   description = "AKS cluster version"
@@ -327,7 +300,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "fullname" {
+variable "studentid" {
   type = string
 }
 
@@ -470,16 +443,6 @@ variable "worker_priority" {
   default       = "Regular"
 } 
 
-variable "dns_zone_name" {
-  description = "(Optional) The name of the DNS Zone to which the AKS cluster should be granted permissions to create records. This is required if you want to use External DNS with this cluster."
-  type        = string  
-}
-
-variable "dns_zone_rg_name" {
-  description = "(Optional) The name of the Resource Group in which the DNS Zone specified in dns_zone_name is located. This is required if you want to use External DNS with this cluster."
-  type        = string  
-}
-
 ```
 
 4. Create a file named `outputs.tf` inside the folder `aks` and copy the following content
@@ -508,16 +471,8 @@ output "kubernetes_cluster_fqdn" {
 
 ```bash
 resource "azurerm_resource_group" "rg" {
-  name     = "${var.fullname}-rg-${terraform.workspace}"
+  name     = "${var.studentid}-rg-${local.env}"
   location = var.location
-}
-
-resource "azurerm_container_registry" "acr" {
-  name                = "${replace(var.fullname, "-", "")}acr${terraform.workspace}"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = var.location
-  sku                 = "Premium"
-  depends_on = [ azurerm_resource_group.rg ]
 }
 
 module "network" {
@@ -526,7 +481,7 @@ module "network" {
   env = local.env
   rg_name = azurerm_resource_group.rg.name
   location = var.location
-  fullname = var.fullname
+  studentid = var.studentid
   tags = var.tags
   vnet_address_space = var.vnet_address_space
   aks_subnet_address_prefix = var.aks_subnet_address_prefix
@@ -539,8 +494,7 @@ module "aks" {
 
   env = local.env
   location = var.location
-  acr_id = azurerm_container_registry.acr.id
-  fullname = var.fullname
+  studentid = var.studentid
   cluster_version = var.cluster_version
   tags = var.tags
   resource_group_name = azurerm_resource_group.rg.name
@@ -566,7 +520,7 @@ module "aks" {
   worker_node_taints = var.worker_node_taints
   dns_zone_name = var.dns_zone_name
   dns_zone_rg_name = var.dns_zone_rg_name
-  depends_on = [ module.network, azurerm_container_registry.acr]
+  depends_on = [ module.network ]
 }
 
 
@@ -579,7 +533,7 @@ variable "location" {
   type = string
 }
 
-variable "fullname" {
+variable "studentid" {
   type = string
 }
 
@@ -669,26 +623,13 @@ variable "worker_node_taints" {
   type = list(string)
 }
 
-# External DNS zone role assignment for AKS
-variable "dns_zone_name" {
-  type = string
-}
-
-variable "dns_zone_rg_name" {
-  type = string
-}
-
 ```
 
 8. Replace the content of the file named `terraform.tfvars` in the root directory of the project with the following content
 
 ```bash
 location = "westeurope"
-fullname = "karim-arous"
-tags = {
-  "project" : "azure-aks-project",
-  "owner"   : "karim-arous"
-}
+studentid = "studentid"
 vnet_address_space = ["10.10.0.0/16"]
 aks_subnet_address_prefix = ["10.10.0.0/21"]
 cluster_version = "1.33.3"
@@ -714,13 +655,9 @@ worker_desired_count = 2
 worker_max_pods = 110
 worker_node_taints = []
 
-# External DNS zone 
-dns_zone_name = "aks.karimarous.com"
-dns_zone_rg_name = "azure-terraform"
-
 ```
 
-Update `fullname` value with your `firstname-lastname`, example `karim-arous`
+Update `studentid` value, example `student1`
 9. Push to Github repo `azure-aks-project`
 
 10. Run workflow `Provision Infrastructure`

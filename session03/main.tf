@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "rg" {
-  name     = "${var.studentid}-rg-${terraform.workspace}"
+  name     = "${var.studentid}-rg-${local.env}"
   location = var.location
 }
 
