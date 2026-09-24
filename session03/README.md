@@ -14,7 +14,6 @@ resource "azurerm_virtual_network" "virtual_network" {
   location            = var.location
   resource_group_name = var.rg_name
   address_space       = var.vnet_address_space
-  tags                = var.tags
 }
 
 # aks subnets
@@ -31,7 +30,6 @@ resource "azurerm_network_security_group" "aks_nsg" {
   name                = "aks-nsg"
   location            = var.location
   resource_group_name = var.rg_name
-  tags = var.tags
 }
 
 resource "azurerm_network_security_rule" "aks_nsg_inbound" {
@@ -91,10 +89,6 @@ variable "rg_name" {
 
 variable "studentid" {
   type = string
-}
-
-variable "tags" {
-  type = map(string)
 }
 
 variable "vnet_address_space" {
@@ -166,10 +160,6 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
   kubernetes_version  = var.cluster_version
   node_resource_group = "${var.studentid}-aks-nodes-rg-${var.env}"
   private_cluster_enabled = var.private_cluster_enabled
-  tags = {
-    "environment" = var.env
-    "created_by"  = var.studentid
-  }
   default_node_pool {
     name                = "defaultpool"
     vm_size             = var.master_vm_size
@@ -246,7 +236,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
   node_count                   = var.worker_desired_count
   os_type                      = var.worker_os_type
   priority                     = var.worker_priority
-  tags                         = var.tags
   temporary_name_for_rotation = "worker"
   upgrade_settings {
     max_surge                     = "33%"   # allow up to 33% extra nodes during upgrade
@@ -293,11 +282,6 @@ variable "oidc_issuer_enabled" {
   description = " (Optional) Enable or Disable the OIDC issuer URL."
   type        = bool
   default     = true
-}
-
-variable "tags" {
-  description = "(Optional) Specifies the tags of the network security group"
-  default     = {}
 }
 
 variable "studentid" {
@@ -482,7 +466,6 @@ module "network" {
   rg_name = azurerm_resource_group.rg.name
   location = var.location
   studentid = var.studentid
-  tags = var.tags
   vnet_address_space = var.vnet_address_space
   aks_subnet_address_prefix = var.aks_subnet_address_prefix
   aks_nsg_inbound_rules = local.aks_nsg_inbound_rules
@@ -496,7 +479,6 @@ module "aks" {
   location = var.location
   studentid = var.studentid
   cluster_version = var.cluster_version
-  tags = var.tags
   resource_group_name = azurerm_resource_group.rg.name
   vnet_subnet_id = module.network.aks_subnet_id
   private_cluster_enabled = var.private_cluster_enabled
@@ -535,10 +517,6 @@ variable "location" {
 
 variable "studentid" {
   type = string
-}
-
-variable "tags" {
-  type = map(string)
 }
 
 variable "vnet_address_space" {
