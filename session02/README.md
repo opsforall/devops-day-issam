@@ -232,16 +232,7 @@ jobs:
 
 ## Update Terraform
 
-1. Update the block `provider` in `provider.tf` file with the following code
-
-```bash
-provider "azurerm" {
-  features {}
-  resource_provider_registrations = "none"
-}
-```
-
-3. Replace all the code that exist in the in `backend.tf` file with the following code
+1. Replace all the code that exist in the in `backend.tf` file with the following code
 
 ```bash
 terraform {
@@ -250,16 +241,14 @@ terraform {
 }
 ```
 
-8. Push to Github repo `azure-aks-project`
+2. Delete unwanted files and folders
 
-### Step 2: Run provision workflow
+In the root directory, delete `.terraform` folder and `.terraform.lock.hcl`
 
-1. In your github repository, click on `Actions`
 
-2. In the left panel, click on `Provision Infrastructure`, click on `Run workflow` and click on `Run workflow` that apears.
+## Provision infrastructure
+1. Push to Github repo `azure-aks-project`
 
-### Step 3: Run Destroy workflow
+2. In your github repository, click on `Actions`
 
-1. In your github repository, click on `Actions`
-
-2. In the left panel, click on `Destroy Infrastructure`, click on `Run workflow` and click on `Run workflow` that apears.
+3. In the left panel, click on `Provision Infrastructure`, click on `Run workflow` and click on `Run workflow` that apears.
