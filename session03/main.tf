@@ -10,7 +10,6 @@ module "network" {
   rg_name                   = azurerm_resource_group.rg.name
   location                  = var.location
   fullname                  = var.fullname
-  tags                      = var.tags
   vnet_address_space        = var.vnet_address_space
   aks_subnet_address_prefix = var.aks_subnet_address_prefix
   aks_nsg_inbound_rules     = local.aks_nsg_inbound_rules
@@ -25,7 +24,6 @@ module "aks" {
   acr_id                  = azurerm_container_registry.acr.id
   fullname                = var.fullname
   cluster_version         = var.cluster_version
-  tags                    = var.tags
   resource_group_name     = azurerm_resource_group.rg.name
   vnet_subnet_id          = module.network.aks_subnet_id
   private_cluster_enabled = var.private_cluster_enabled

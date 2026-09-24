@@ -87,12 +87,3 @@ variable "worker_max_pods" {
 variable "worker_node_taints" {
   type = list(string)
 }
-
-# External DNS zone role assignment for AKS
-variable "dns_zone_name" {
-  type = string
-}
-
-variable "dns_zone_rg_name" {
-  type = string
-}

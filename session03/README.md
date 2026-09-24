@@ -215,40 +215,6 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
     ]
   }
 }
-/*
-resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
-  name                         = var.worker_node_name
-  kubernetes_cluster_id        = azurerm_kubernetes_cluster.aks-cluster.id
-  vm_size                      = var.worker_vm_size
-  mode                         = var.worker_mode
-  zones                        = var.worker_availability_zones
-  node_labels                  = var.worker_labels
-  auto_scaling_enabled         = var.worker_enable_auto_scaling
-  host_encryption_enabled      = var.worker_enable_host_encryption
-  node_public_ip_enabled       = var.worker_enable_node_public_ip
-  max_pods                     = var.worker_max_pods
-  node_taints                  = var.worker_node_taints
-  vnet_subnet_id               = var.vnet_subnet_id
-  pod_subnet_id                = var.worker_pod_subnet_id
-  orchestrator_version         = var.worker_orchestrator_version
-  max_count                    = var.worker_max_count
-  min_count                    = var.worker_min_count
-  node_count                   = var.worker_desired_count
-  os_type                      = var.worker_os_type
-  priority                     = var.worker_priority
-  temporary_name_for_rotation = "worker"
-  upgrade_settings {
-    max_surge                     = "33%"   # allow up to 33% extra nodes during upgrade
-    drain_timeout_in_minutes      = 30      # timeout for draining a node
-    node_soak_duration_in_minutes = 10      # wait time before node is considered stable
-  }
-  lifecycle {
-    ignore_changes = [
-        tags
-    ]
-  }
-  depends_on = [ azurerm_kubernetes_cluster.aks-cluster ]
-}
 
 ```
 

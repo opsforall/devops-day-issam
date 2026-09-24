@@ -27,11 +27,6 @@ variable "oidc_issuer_enabled" {
   default     = true
 }
 
-variable "tags" {
-  description = "(Optional) Specifies the tags of the network security group"
-  default     = {}
-}
-
 variable "fullname" {
   type = string
 }
