@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
-      version = "4.61.0"
+      source  = "hashicorp/azurerm"
+      version = "5.6.0"
     }
     helm = {
       source = "hashicorp/helm"
@@ -24,11 +24,9 @@ terraform {
 provider "azurerm" {
   features {}
   resource_provider_registrations = "none"
-  subscription_id = ""
-  tenant_id       = ""
 }
 
-data "azurerm_kubernetes_cluster" "example" {
+data "azurerm_kubernetes_cluster" "my_cluster" {
   name                = var.cluster_name
   resource_group_name = var.rg_name
 }
