@@ -32,6 +32,9 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
       drain_timeout_in_minutes      = 30    # timeout for draining a node
       node_soak_duration_in_minutes = 10    # wait time before node is considered stable
     }
+    node_provisioning_profile {
+      mode = "Manual"
+    }
     tags = {
       "nodepool-type" = "system"
       "environment"   = var.env
