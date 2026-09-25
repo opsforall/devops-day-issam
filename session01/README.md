@@ -41,7 +41,6 @@ provider "azurerm" {
 }
 ```
 
-2. Update the values of `subscription_id` and `tenant_id` with the results that you got in the previous step aka ("Step 1: Get Your Azure Subscription and Tenant IDs")
 
 ### Step 2: Configure backend
 
