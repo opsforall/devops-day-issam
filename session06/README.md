@@ -71,17 +71,12 @@ Open [Prometheus](http://localhost:9090) in your browser.
 
 #### Grafana
 
+1. Run the following command on a new git terminal:
+
 ```bash
 kubectl port-forward -n monitoring svc/kube-prometheus-stack-grafana 3000:80
 ```
 
-Open [Grafana](http://localhost:3000) in your browser. With the `values.yaml` configuration above, sign in with username `admin` and password `admin`.
-
-If you used a different configuration, retrieve the Grafana admin password using PowerShell:
-
-```powershell
-$password = kubectl get secret -n monitoring kube-prometheus-stack-grafana -o jsonpath="{.data.admin-password}"
-[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($password))
-```
+2. Open [Grafana](http://localhost:3000) in your browser. With the `values.yaml` configuration above, sign in with username `admin` and password `admin`.
 
 Press `Ctrl+C` in each terminal to stop port forwarding.
