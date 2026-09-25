@@ -345,4 +345,4 @@ variable "cluster_name" {
 
 2. In your github repository, click on `Actions`
 
-3. In the left panel, click on `Install tools`, click on `Run workflow` and click on `Run workflow` that apears.
+3. In the left panel, click on `Install tools`, click on `Run workflow`, choose `dev` workspace, fill the fields `cluster_name` and `rg_name` with your own cluster name and rg name. Click on `Run workflow` under them.

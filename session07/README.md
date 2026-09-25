@@ -106,45 +106,8 @@ spec:
   type: ClusterIP
 ```
 
-5. Inside the folder `frontend`, create a file named `httproute-frontend.yaml` and copy the following content inside
-
-```bash
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: frontend-route
-  namespace: monitoring
-spec:
-  parentRefs:
-  - name: public-gateway
-    namespace: envoy-gateway-system
-  hostnames:
-  - yourfullname-frontend.eks.karimarous.com
-  rules:
-  - backendRefs:
-    - name: frontend
-      port: 8080
-```
-
-5. In the folder named `kubernetes` in the root folder, open the folder named `helm`, open the folder named `cert-manager`, open the folder named `manifests`, create a file named `certificate-frontend.yaml` and copy the following content inside
-
-```bash
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: frontend-pipelines-cert
-  namespace: envoy-gateway-system
-spec:
-  secretName: frontend-tls
-  dnsNames:
-  - yourfullname-frontend.aks.karimarous.com
-  issuerRef:
-    kind: ClusterIssuer
-    name: letsencrypt-prod
-```
-
 ### Step 3: desinstall tools 
 
 1. In your github repository, click on `Actions`
 
-2. In the left panel, click on `Desinstall tools`, click on `Run workflow`, choose `dev` workspace fill the field `cluster_name` with your own cluster name. Click on `Run workflow` under them.
+2. In the left panel, click on `Desinstall tools`, click on `Run workflow`, choose `dev` workspace, fill the fields `cluster_name` and `rg_name` with your own cluster name and rg name. Click on `Run workflow` under them.
