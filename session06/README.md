@@ -4,7 +4,7 @@ This session covers the installation of kubeflow pipelines using terraform
 
 ## Install kube-prometheus-stack in AKS
 ### kube-prometheus-stack config
-1. Create in the root directory a folder named `helm`. Inside the folder `helm`, create folder named `kube-prometheus-stack`
+1. Create in the root directory a folder named `kubernetes`, inside `kubernetes` create a folder named `helm`. Inside the folder `helm`, create folder named `kube-prometheus-stack`
 2. Create a file named `values.yaml` in the folder `kube-prometheus-stack` and copy the following code
 
 ```bash
