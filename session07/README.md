@@ -1,4 +1,4 @@
-# AKS tools - Session 05: Deploy a microservice and expose it to the internet
+# AKS tools - Session 07: Deploy a microservice and expose it to the internet
 
 This session covers the dockerization , the deployement and the expose of the microservice to the internet
 

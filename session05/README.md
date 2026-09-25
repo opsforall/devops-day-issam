@@ -1,4 +1,4 @@
-# AKS Tools - Session 01: Configure providers and backend
+# AKS Tools - Session 05: Configure providers and backend
 
 
 ## Obtain a Client ID

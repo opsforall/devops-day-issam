@@ -1,4 +1,4 @@
-# AKS tools - Session 04: Install kube-pometheus-stack pipelines
+# AKS tools - Session 06: Install kube-pometheus-stack pipelines
 
 This session covers the installation of kubeflow pipelines using terraform
 

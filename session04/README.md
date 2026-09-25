@@ -1,4 +1,4 @@
-# Azure AKS - Session 00: Prepare envirenment
+# Azure AKS - Session 04: Prepare envirenment
 
 Welcome to the `Session00` in Azure AKS.
 
