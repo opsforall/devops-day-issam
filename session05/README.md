@@ -128,7 +128,7 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.14.0
+          terraform_version: 1.16.0
       - name: Init
         working-directory: ./
         run:  terraform init -backend-config="resource_group_name=${{ secrets.TF_BACKEND_RG }}" -backend-config="storage_account_name=${{ secrets.TF_BACKEND_STORAGE_ACCOUNT }}" -backend-config="container_name=${{ secrets.TF_BACKEND_CONTAINER }}" -backend-config="key=${{ secrets.TF_BACKEND_KEY }}"
@@ -212,7 +212,7 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.14.0
+          terraform_version: 1.16.0
       - name: Init
         working-directory: ./
         run:  terraform init  -backend-config="resource_group_name=${{ secrets.TF_BACKEND_RG }}" -backend-config="storage_account_name=${{ secrets.TF_BACKEND_STORAGE_ACCOUNT }}" -backend-config="container_name=${{ secrets.TF_BACKEND_CONTAINER }}" -backend-config="key=${{ secrets.TF_BACKEND_KEY }}"
