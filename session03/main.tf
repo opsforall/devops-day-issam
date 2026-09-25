@@ -33,19 +33,5 @@ module "aks" {
   master_vm_size            = var.master_vm_size
   master_os_disk_size_gb    = var.master_os_disk_size_gb
   master_availability_zones = var.master_availability_zones
-  # worker nodes
-  worker_node_name           = var.worker_node_name
-  worker_vm_size             = var.worker_vm_size
-  worker_mode                = var.worker_mode
-  worker_availability_zones  = var.worker_availability_zones
-  worker_labels              = var.worker_labels
-  worker_enable_auto_scaling = var.worker_enable_auto_scaling
-  worker_max_count           = var.worker_max_count
-  worker_min_count           = var.worker_min_count
-  worker_desired_count       = var.worker_desired_count
-  worker_max_pods            = var.worker_max_pods
-  worker_node_taints         = var.worker_node_taints
-  dns_zone_name              = var.dns_zone_name
-  dns_zone_rg_name           = var.dns_zone_rg_name
   depends_on                 = [module.network]
 }

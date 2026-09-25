@@ -292,107 +292,6 @@ variable "master_availability_zones" {
   type = list(string)
 }
 
-# Size of worker nodes
-variable "worker_node_name" {
-  description = "(Required) Specifies the name of the node pool."
-  type        = string
-}
-
-variable "worker_vm_size" {
-  description = "(Required) The SKU which should be used for the Virtual Machines used in this Node Pool. Changing this forces a new resource to be created."
-  type        = string
-}
-
-variable "worker_mode" {
-  description = "(Optional) Should this Node Pool be used for System or User resources? Possible values are System and User. Defaults to User."
-  type          = string
-  default       = "User"
-} 
-
-variable "worker_availability_zones" {
-  description = "(Optional) A list of Availability Zones where the Nodes in this Node Pool should be created in. Changing this forces a new resource to be created."
-  type        = list(string)
-  default     = ["1"]
-}
-
-variable "worker_labels" {
-  description = "(Optional) A map of Kubernetes labels which should be applied to nodes in this Node Pool. Changing this forces a new resource to be created."
-  type          = map(any)
-  default       = {}
-} 
-
-variable "worker_enable_auto_scaling" {
-  description = "(Optional) Whether to enable auto-scaler. Defaults to false."
-  type          = bool
-  default       = true
-}
-
-variable "worker_enable_host_encryption" {
-  description = "(Optional) Should the nodes in this Node Pool have host encryption enabled? Defaults to false."
-  type          = bool
-  default       = false
-} 
-
-variable "worker_enable_node_public_ip" {
-  description = "(Optional) Should each node have a Public IP Address? Defaults to false. Changing this forces a new resource to be created."
-  type          = bool
-  default       = false
-} 
-
-variable "worker_max_pods" {
-  description = "(Optional) The maximum number of pods that can run on each agent. Changing this forces a new resource to be created."
-  type          = number
-  default       = 130
-}
-
-variable "worker_node_taints" {
-  description = "(Optional) A list of Kubernetes taints which should be applied to nodes in the agent pool (e.g key=value:NoSchedule). Changing this forces a new resource to be created."
-  type          = list(string)
-  default       = []
-} 
-
-variable "worker_pod_subnet_id" {
-  description = "(Optional) The ID of the Subnet where the pods in the default Node Pool should exist. Changing this forces a new resource to be created."
-  type          = string
-  default       = null
-}
-
-variable "worker_orchestrator_version" {
-  description = "(Optional) Version of Kubernetes used for the Agents. If not specified, the latest recommended version will be used at provisioning time (but won't auto-upgrade)"
-  type          = string
-  default       = null
-} 
-
-variable "worker_max_count" {
-  description = "(Required) The maximum number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be greater than or equal to min_count."
-  type          = number
-  default       = 2
-}
-
-variable "worker_min_count" {
-  description = "(Required) The minimum number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be less than or equal to max_count."
-  type          = number
-  default       = 1
-}
-
-variable "worker_desired_count" {
-  description = "(Optional) The initial number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be a value in the range min_count - max_count."
-  type          = number
-  default       = 1
-}
-
-variable "worker_os_type" {
-  description = "(Optional) The Operating System which should be used for this Node Pool. Changing this forces a new resource to be created. Possible values are Linux and Windows. Defaults to Linux."
-  type          = string
-  default       = "Linux"
-} 
-
-variable "worker_priority" {
-  description = "(Optional) The Priority for Virtual Machines within the Virtual Machine Scale Set that powers this Node Pool. Possible values are Regular and Spot. Defaults to Regular. Changing this forces a new resource to be created."
-  type          = string
-  default       = "Regular"
-} 
-
 ```
 
 4. Create a file named `outputs.tf` inside the folder `aks` and copy the following content
@@ -453,21 +352,6 @@ module "aks" {
   master_min_count = var.master_min_count
   master_vm_size = var.master_vm_size
   master_os_disk_size_gb = var.master_os_disk_size_gb
-  master_availability_zones = var.master_availability_zones
-  # worker nodes
-  worker_node_name = var.worker_node_name
-  worker_vm_size = var.worker_vm_size
-  worker_mode = var.worker_mode
-  worker_availability_zones = var.worker_availability_zones
-  worker_labels = var.worker_labels
-  worker_enable_auto_scaling = var.worker_enable_auto_scaling
-  worker_max_count = var.worker_max_count
-  worker_min_count = var.worker_min_count
-  worker_desired_count = var.worker_desired_count
-  worker_max_pods = var.worker_max_pods
-  worker_node_taints = var.worker_node_taints
-  dns_zone_name = var.dns_zone_name
-  dns_zone_rg_name = var.dns_zone_rg_name
   depends_on = [ module.network ]
 }
 
@@ -522,51 +406,6 @@ variable "master_availability_zones" {
   type = list(string)
 }
 
-# worker nodes
-variable "worker_node_name" {
-  type = string
-}
-
-variable "worker_vm_size" {
-  type = string
-}
-
-variable "worker_mode" {
-  type        = string
-}
-
-variable "worker_availability_zones" {
-  type = list(string)
-}
-
-variable "worker_labels" {
-  type = map(any)
-}
-
-variable "worker_enable_auto_scaling" {
-  type = bool
-}
-
-variable "worker_max_count" {
-  type = number
-}
-
-variable "worker_min_count" {
-  type = number
-}
-
-variable "worker_desired_count" {
-  type = number
-}
-
-variable "worker_max_pods" {
-  type = number
-}
-
-variable "worker_node_taints" {
-  type = list(string)
-}
-
 ```
 
 8. Replace the content of the file named `terraform.tfvars` in the root directory of the project with the following content
@@ -585,19 +424,6 @@ master_min_count = 1
 master_vm_size = "Standard_B8s_v2"
 master_os_disk_size_gb = 30
 master_availability_zones = ["2"]
-
-# worker nodes
-worker_node_name = "usernodepool"
-worker_vm_size = "Standard_A8_v2"
-worker_mode = "System"
-worker_availability_zones = ["1"]
-worker_labels = {}
-worker_enable_auto_scaling = true
-worker_max_count = 3
-worker_min_count = 1
-worker_desired_count = 2
-worker_max_pods = 110
-worker_node_taints = []
 
 ```
 
