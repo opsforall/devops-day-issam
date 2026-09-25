@@ -31,7 +31,7 @@ terraform {
     }
   }
   # Required Terraform version
-  required_version = ">= 1.15.0"
+  required_version = ">= 1.16.0"
 }
 
 # Azure Provider configuration

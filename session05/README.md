@@ -277,7 +277,7 @@ terraform {
       version = ">= 1.19.0"
     }
   }
-  required_version = ">= 1.14.0"
+  required_version = ">= 1.16.0"
 }
 
 # azurerm Provider configuration
