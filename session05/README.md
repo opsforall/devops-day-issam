@@ -173,12 +173,12 @@ on:
       rg_name:
         description: "Put the name of the resource group to use"
         required: true
-        default: "karim-arous-rg-dev"
+        default: "studentid-rg-dev"
         type: string
       cluster_name:
         description: "Put the name of the AKS cluster to use"
         required: true
-        default: "karim-arous-aks-dev"
+        default: "studentid-aks-dev"
         type: string
 
 permissions:
