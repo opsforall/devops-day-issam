@@ -87,6 +87,10 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
   kubernetes_version  = var.cluster_version
   node_resource_group = "${var.studentid}-aks-nodes-rg-${var.env}"
   private_cluster_enabled = var.private_cluster_enabled
+  node_provisioning_profile {
+    mode = "Manual"
+  }
+
   default_node_pool {
     name                = "defaultpool"
     vm_size             = var.master_vm_size
@@ -107,9 +111,6 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
       max_surge                     = "33%"   # allow up to 33% extra nodes during upgrade
       drain_timeout_in_minutes      = 30      # timeout for draining a node
       node_soak_duration_in_minutes = 10      # wait time before node is considered stable
-    }
-    node_provisioning_profile {
-      mode = "Manual"
     }
     tags = {
       "nodepool-type" = "system"
