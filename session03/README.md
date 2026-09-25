@@ -277,6 +277,7 @@ module "aks" {
   master_min_count = var.master_min_count
   master_vm_size = var.master_vm_size
   master_os_disk_size_gb = var.master_os_disk_size_gb
+  master_availability_zones = var.master_availability_zones
   depends_on = [ module.network ]
 }
 
