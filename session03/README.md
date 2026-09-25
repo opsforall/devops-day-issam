@@ -25,51 +25,6 @@ resource "azurerm_subnet" "aks_subnet" {
   depends_on = [ azurerm_virtual_network.virtual_network ]
 }
 
-# NSG for aks subnet
-resource "azurerm_network_security_group" "aks_nsg" {
-  name                = "aks-nsg"
-  location            = var.location
-  resource_group_name = var.rg_name
-}
-
-resource "azurerm_network_security_rule" "aks_nsg_inbound" {
-  for_each = var.aks_nsg_inbound_rules
-  name                        = each.value.name
-  priority                    = each.value.priority
-  direction                   = each.value.rule_type 
-  access                      = each.value.access
-  protocol                    = each.value.protocol
-  source_port_range           = each.value.source_port_range
-  destination_port_range      = each.value.destination_port_range
-  source_address_prefix       = each.value.source_address_prefix_cidr 
-  destination_address_prefix  = each.value.destination_address_prefix
-  resource_group_name         = var.rg_name
-  network_security_group_name = azurerm_network_security_group.aks_nsg.name
-  depends_on = [ azurerm_network_security_group.aks_nsg]
-}
-
-resource "azurerm_network_security_rule" "aks_nsg_outbound" {
-  for_each = var.aks_nsg_outbound_rules
-  name                        = each.value.name
-  priority                    = each.value.priority
-  direction                   = each.value.rule_type 
-  access                      = each.value.access
-  protocol                    = each.value.protocol
-  source_port_range           = each.value.source_port_range
-  destination_port_range      = each.value.destination_port_range
-  source_address_prefix       = each.value.source_address_prefix_cidr 
-  destination_address_prefix  = each.value.destination_address_prefix
-  resource_group_name         = var.rg_name
-  network_security_group_name = azurerm_network_security_group.aks_nsg.name
-  depends_on = [ azurerm_network_security_group.aks_nsg]
-}
-
-resource "azurerm_subnet_network_security_group_association" "nsg_associate_aks_subnet" {
-  subnet_id                 = azurerm_subnet.aks_subnet.id
-  network_security_group_id = azurerm_network_security_group.aks_nsg.id
-  depends_on = [ azurerm_network_security_group.aks_nsg, azurerm_subnet.aks_subnet ]
-}
-
 ```
 
 3. Create a file named `variables.tf` inside the folder `network` and copy the following content
@@ -97,34 +52,6 @@ variable "vnet_address_space" {
 
 variable "aks_subnet_address_prefix" {
   type = list(string)
-}
-
-variable "aks_nsg_inbound_rules" {
-  type = map(object({
-    name                       = string
-    priority                   = number
-    rule_type                  = string
-    access                     = string
-    protocol                   = string
-    source_port_range          = string
-    destination_port_range     = string
-    source_address_prefix_cidr = string
-    destination_address_prefix = string
-  }))
-}
-
-variable "aks_nsg_outbound_rules" {
-  type = map(object({
-    name                       = string
-    priority                   = number
-    rule_type                  = string
-    access                     = string
-    protocol                   = string
-    source_port_range          = string
-    destination_port_range     = string
-    source_address_prefix_cidr = string
-    destination_address_prefix = string
-  }))
 }
 
 ```
