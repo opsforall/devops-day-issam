@@ -66,8 +66,6 @@ gh api repos/username/azure-aks-project --jq '.id'
 
 4. Ensure you have choosed `User, group, or service principal` in `Assign access to` section, click `Select members` in Members section. Search for your App registration that you created it in `step 2`, choose it, click `select` and click `Next`
 
-5. In the `What user can do` choose `Allow user to assign all roles (highly privileged)` and then click `Next`
-
 6. Click `Review + assign`
 
 ## Configure CICD
