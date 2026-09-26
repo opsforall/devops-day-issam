@@ -351,7 +351,7 @@ private_cluster_enabled = false
 # master nodes
 master_max_count = 3
 master_min_count = 1
-master_vm_size = "Standard_B8s_v2"
+master_vm_size = "Standard_B2s_v2"
 master_os_disk_size_gb = 30
 master_availability_zones = ["3"]
 
