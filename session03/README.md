@@ -362,5 +362,3 @@ Update `studentid` value, example `student1`
 
 10. Run workflow `Provision Infrastructure`
 
-11. Run workflow `Destroy Infrastructure`
-
