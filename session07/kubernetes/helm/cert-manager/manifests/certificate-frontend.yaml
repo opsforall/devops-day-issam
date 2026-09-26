@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: frontend-pipelines-cert
+  namespace: envoy-gateway-system
+spec:
+  secretName: frontend-tls
+  dnsNames:
+  - yourfullname-frontend.aks.karimarous.com
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod

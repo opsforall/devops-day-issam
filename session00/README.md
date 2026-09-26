@@ -1,0 +1,23 @@
+# Azure AKS - Session 00: Prepare envirenment
+
+Welcome to the `Session00` in Azure AKS.
+
+## Prerequisites
+
+- An Azure subscription
+- Terraform >= 1.15.0 installed
+- Azure CLI installed and authenticated
+- VS Code installed
+- Github CLI installed
+
+## Let's begin
+
+### Create or login to your acount gitub account
+1. In your `laptop` fo to your `Desktop` and create a folder named `devops-day` that will contain all the future projects.
+2. Go to `https://github.com/`
+3. If you have an account just login. If you don't have, just create one.
+### Create Github repository
+1. Create a `github repository` named `azure-aks-project` that you will be using it to put all the project content. Ensure to add a Readme.md and a .gitignore that will ignore the unnecessary terraform configuration before creating the repo
+2. `Clone` this git repo to your `laptop` exactly inside your `devops-day` folder.
+3. Access the `cloned` folder using `VS Code`
+4. Go to .gitignore and comment `*.tfvars`
