@@ -73,8 +73,9 @@ Ask the instructor if needed
 - TF_BACKEND_CONTAINER
 Ask the instructor if needed
 - TF_BACKEND_KEY
-Ask the instructor if needed
+Put `aks-tools/studentid/terraform.tfstate`
 
+Don't forgot to replace `studentid` with for example `student1`
 ### Step 2: Create workflows
 
 1. Create a folder in the root directory named `.github`.
