@@ -36,7 +36,6 @@ resource "kubernetes_namespace" "monitoring" {
   metadata {
     name = "monitoring"
   }
-  depends_on = [helm_release.cert_manager]
 }
 
 resource "helm_release" "kube_prometheus_stack" {
