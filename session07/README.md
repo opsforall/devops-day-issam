@@ -12,7 +12,7 @@ This session covers the dockerization , the deployement and the expose of the mi
 
 2. Access the folder `frontend`, and open it inside VS Code.
 
-3. Create a file named Dockerfile and copy the following content inside
+3. Create a file named `Dockerfile` and copy the following content inside
 
 ```bash
 FROM nginx:alpine
@@ -22,8 +22,15 @@ COPY . /usr/share/nginx/html
 EXPOSE 80 
 ```
 
-4. Ensure that Docker is working in your `Laptop`
-5. Open a `Terminal` in `VS Code` and copy the following command to connect to Dockerhub
+4. Open `Terminal` in `VS code`and run the following command
+
+```bash
+docker ps
+```
+
+If you receive any error, open `Docker Desktop` app and ensure it's working 
+
+5. Run the following command to connect to Dockerhub
 
 ```bash
 docker login
@@ -36,17 +43,23 @@ docker build -t username/frontend:v1 .
 
 ```
 
-7. Copy the following command inside the `Terminal` to push the Docker image to Dockerhun
+Replace `username` with your `Dockerhub` username 
+
+7. Copy the following command inside the `Terminal` to push the Docker image to Dockerhub
 
 ```bash
 docker push username/frontend:v1 
 ```
 
+Replace `username` with your `Dockerhub` username 
+
 8. Copy the following command inside the `Terminal` to test in the App
 
 ```bash
-docker run --name frontend -d -p 8080:80 karimarous/frontend:v1
+docker run --name frontend -d -p 8080:80 username/frontend:v1
 ```
+
+Replace `username` with your `Dockerhub` username 
 
 To check if it's working, open `Chrome` and open the following `URL`
 
@@ -85,10 +98,12 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: karimarous/frontend:v1
+          image: username/frontend:v1
           ports:
             - containerPort: 80
 ```
+
+Replace `username` with your `Dockerhub` username 
 
 4. Inside the folder `frontend`, create a file named `svc.yaml` and copy the following content inside
 
@@ -105,6 +120,18 @@ spec:
       targetPort: 8080
   type: ClusterIP
 ```
+
+### Access the frontend using port forwarding
+
+After deploying the app and service to AKS, run the following command in your terminal:
+
+```bash
+kubectl port-forward svc/frontend-svc 8080:80
+```
+
+If you deployed the service in a specific namespace, add `-n <namespace>` to the command.
+
+Keep the terminal open and visit [http://localhost:8080](http://localhost:8080) in your browser. Press `Ctrl+C` to stop port forwarding.
 
 ### Step 3: desinstall tools 
 
